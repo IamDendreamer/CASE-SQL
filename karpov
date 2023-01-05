@@ -1,0 +1,10 @@
+SELECT
+  count(DISTINCT user_id) as users_count, time
+from
+  user_actions
+ group by time
+where  time  (
+  SELECT  (min(time) - INTERVAL '1 week') as tht
+  from user_actions
+  group by order_id
+  ) as subquery1
