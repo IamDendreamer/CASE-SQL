@@ -1,0 +1,15 @@
+SELECT count(DISTINCT user_id) as users
+from user_actions
+where time >= (
+SELECT
+max(time)-INTERVAL '1 week' as maxtime
+from user_actions
+where action='create_order'
+group by action
+) 
+
+
+Посчитайте количество уникальных клиентов в таблице user_actions, сделавших за последнюю неделю хотя бы один заказ.
+Полученную колонку со значением назовите users_count. В качестве текущей даты, от которой откладывать неделю, 
+используйте последнюю дату в той же таблице user_actions.
+Поле в результирующей таблице: users_count
