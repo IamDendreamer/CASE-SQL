@@ -1,0 +1,14 @@
+select  order_id, product_ids
+from orders
+where order_id in (select order_id from courier_actions where action='deliver_order'
+order by time desc
+limit 100)
+order by order_id
+
+
+
+Выведите id и содержимое 100 последних доставленных заказов из таблицы orders. Содержимым заказов считаются списки с id входящих в заказ товаров. Результат отсортируйте по возрастанию id заказа.
+Поля в результирующей таблице: order_id, product_ids
+Пояснение:
+Обратите внимание, что содержимое заказов находится в таблице orders, а информация о действиях с заказами — в таблице courier_actions.
+
