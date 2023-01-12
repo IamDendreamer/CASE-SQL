@@ -1,0 +1,21 @@
+select courier_id, birth_date, sex
+from couriers
+where courier_id in (select courier_id
+from (select count(order_id) as countid, courier_id
+from (select courier_id, time, action, order_id
+from courier_actions
+where DATE_PART('month',time)='9' and action = 'deliver_order') as subquery1
+group by courier_id) as subquery2
+where countid>=30)
+order by courier_id
+
+Первый подзпрос выгружает курьеров обязательно ДОСТАВЛЕННЫМИ с заказами в сентябре
+Второй подзапрос на него накатывается и считает число заказов у каждого курьера с группиовкой само собой
+Третий подзапрос на него накатывается и ставит огреничение больше 30ти заказов
+Оснвной запрос берет данные с другой таблицы дата рождения пол и по ключевому полю курьер ИД выгружает только тех курьеров какие были в третьем подзапросе.
+
+
+Из таблицы couriers выведите всю информацию о курьерах, которые в сентябре 2022 года доставили 30 и более заказов. Результат отсортируйте по возрастанию id курьера.
+Поля в результирующей таблице: courier_id, birth_date, sex
+Пояснение:
+Обратите внимание, что информация о курьерах находится в таблице couriers, а информация о действиях с заказами — в таблице courier_actions.
