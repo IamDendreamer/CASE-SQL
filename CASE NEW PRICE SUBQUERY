@@ -1,0 +1,7 @@
+select product_id,  name, price, case
+when price >= ((select avg(price) from products)+50) then 0.85*price
+when price <= ((select avg(price) from products)-50) then 0.9*price
+ELSE PRICE
+end as new_price
+from products
+order by price DESC, product_id
